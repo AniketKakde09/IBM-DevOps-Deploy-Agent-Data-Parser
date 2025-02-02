@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pluginInfo>
+    <author name="Aniket Kakde">
+        <organization>example-org</organization>
+        <email>example@gmail.com</email>
+        <website>https://developer.ibm.com/urbancode/plugins/</website>
+        <bio/>
+    </author>
+
+    <integration type="Automation"/>
+
+    <tool-description>Agent Information parser for IBM UrbanCode Deploy</tool-description>
+
+    <meta-html>
+        <meta content="" name="description"/>
+        <meta content="" name="keywords"/>  
+    </meta-html>
+    
+    <release-version>1</release-version>
+
+    <release-notes>
+        <release-note plugin-version="1">
+            Plugin version 1
+        </release-note>
+    </release-notes>
+
+</pluginInfo>

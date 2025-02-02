@@ -1,0 +1,80 @@
+<!-- The XML declaration <?xml version="1.0" encoding="UTF-8"?> specifies the version of XML being used and the character encoding for the document. -->
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Root element defining the IBM UCD plugin with its schema and namespace declarations -->
+<plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <!-- Plugin metadata including unique identifier, version, name, description, and tags -->
+    <header>
+        <identifier id="com.opensource" version="1" name="Agent Data Parser"/>
+        <description>Plugin to get the list of agent and agent properties</description>
+        <tag>Opensource/Custom/Utilities</tag>
+    </header>
+
+    <!-- Defines step in UCD process -->
+    <step-type name="Get Agent Details List">
+        <description/>
+
+        <!-- Defines plugin properties including UCD URL, credentials, agent properties, export options, and file path -->
+        <properties>
+            <property name="UCD_URL" required="true">
+                <property-ui type="textBox" label="UCD_URL"
+                             description="Enter the full URL for the UCD website. Here is an example: https://example.ucd.url:8443"
+                             default-value=""/>
+            </property>
+            <property name="UCD_Username" required="true">
+                <property-ui type="textBox" label="UCD Username"
+                             description="Enter Username to login into UCD"
+                             default-value=""/>
+            </property>
+            <property name="UCD_Password" required="true">
+                <property-ui type="secureBox" label="UCD Password"
+                             description="Enter Password to login into UCD"
+                             default-value=""/>
+            </property>
+            <property name="Agent_Property_List" required="true">
+                <property-ui type="textAreaBox" label="Agent Property List"
+                             description="List of properties sperated by new line"
+                             default-value=""/>
+            </property>
+            <property name="Export_Data_Into_CSV" required="true">
+                <property-ui type="checkBox" label="Export_Data_Into_CSV"
+                             description="When this checkbox is selected, a csv file will be created containing the agent's details"
+                             default-value="false"/>
+            </property>
+
+            <property name="ACCEPT_SELF_SIGNED_CERTIFICATE" required="true">
+                <property-ui type="checkBox" label="ACCEPT_SELF_SIGNED_CERTIFICATE"
+                             description="When this checkbox is checked, SELF SIGNED CERTIFICATE will be ACCEPTED"
+                             default-value="false"/>
+            </property>
+
+            <property name="File_Path" required="false">
+                <property-ui type="textBox" label="File_Path"
+                             description="File name in which data is to be added. For example, AgentData.csv"
+                             default-value=""/>
+            </property>
+        </properties>
+
+        <!-- Post-processing script to set the status based on the exit code -->
+        <post-processing>
+            <![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put("Status", "Failure");
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]>
+        </post-processing>
+
+        <!-- Command to execute the Java JAR file with input and output property files -->
+        <command program="${JAVA_HOME}/bin/java">
+            <arg value="-jar"/>
+            <arg file="IBM-DevOps-Deploy-Agent-Parser-1.0-jar-with-dependencies.jar"/>
+            <arg file="${PLUGIN_INPUT_PROPS}"/>
+            <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+        </command>
+
+    </step-type>
+</plugin>
